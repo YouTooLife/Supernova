@@ -148,7 +148,7 @@ public static float width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHe
 	
 	
 	public void handleInput(float delta) {
-		
+		//
 		
 	}
 
