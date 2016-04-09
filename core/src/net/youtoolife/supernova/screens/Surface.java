@@ -74,7 +74,7 @@ public static float width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHe
 		pack = json.fromJson(RMEPack.class, s);
 	
 		
-		//gui = json.fromJson(RMEGUI.class, new FileHandle(text+".jGUI"));
+		//pack = json.fromJson(RMEPack.class, new FileHandle("Maps/level0.jMap"));
 		pack.setGame(true);
 		
 		createInputProc();

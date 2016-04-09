@@ -1,5 +1,7 @@
 package net.youtoolife.supernova.screens;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
@@ -11,7 +13,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -71,6 +75,8 @@ public static float width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHe
 	
 	float delay, red, green, blue, col;
 	
+	Array<ParticleEffect> effects = new Array<ParticleEffect>();
+	
 
 	public MainMenu (Supernova game) {
 		this.game = game;
@@ -85,14 +91,34 @@ public static float width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHe
 		String s = crypt.decrypt(filehandle.readBytes(), "YouTooLife1911");
 		gui = json.fromJson(RMEGUI.class, s);
 
-		//gui = json.fromJson(RMEGUI.class, new FileHandle(text+".jGUI"));
+		//gui = json.fromJson(RMEGUI.class, new FileHandle("objects/MainMenu.jGUI"));
 		
 		createGui();
 		
-		delay = red = green = blue = col = alpha = 0;
+		delay = 3.f;
+		red = green = blue = col = alpha = 0;
 		
 		RMESound.playTrack("menu");
 		Gdx.input.setCursorCatched(true);
+		
+		//TextureAtlas particleAtlas;
+		
+		
+		//effect.setPosition(width / 2.f, height / 2.f);
+		
+		/*addEffect(width/2, -15);
+		addEffect(width/8, -15);
+		addEffect(width/4*3, -15);*/
+		
+	}
+	
+	public void addEffect(float x, float y) {
+		ParticleEffect effect = new ParticleEffect();
+		effect.load(Gdx.files.local("particle_menu2.rmp"),Gdx.files.local(""));
+		effect.setPosition(x, y);
+		//effect.getEmitters().first().setPosition(10, height/2);
+		effect.start();
+		effects.add(effect);
 	}
 	
 	public void menuClick() {
@@ -238,6 +264,13 @@ public static float width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHe
 				if (!rightTouched && (keycode == Keys.RIGHT || keycode == Keys.D)) {
 					rightTouched = true;
 					btn_next.setColor(red, green, blue, 1.f);
+					
+					/*addEffect(5, -15);
+					addEffect(width/4, -15);
+					addEffect(width/2, -15);
+					addEffect(width-30, -15);*/
+					//for (ParticleEffect effect:effects)
+					//	effect.getEmitters().first().setContinuous(false);
 				}
 				return true;
 			}
@@ -261,6 +294,8 @@ public static float width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHe
 		editColor(delta);
 		
 	
+		//if (effect.isComplete())
+		//	effect.reset();
 	}
 	
 
@@ -293,12 +328,14 @@ public static float width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHe
 		game.batcher.enableBlending();
 		game.batcher.begin();
 	/////-------GAME-------////
-		gui.draw(game.batcher);
 		
+		for (ParticleEffect effect:effects)
+		effect.draw(game.batcher, Gdx.graphics.getDeltaTime());
 
-			game.batcher.end();
-	
+		gui.draw(game.batcher);
 		//stage.draw();
+		
+		game.batcher.end();
 
 		
 		///----dbg---///
@@ -317,6 +354,7 @@ public static float width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHe
 	public void render (float delta) {
 		update(delta);
 		draw();
+		
 	}
 	
 	public void editColor(float delta) {
@@ -373,7 +411,29 @@ public static float width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHe
 					alpha = 1.f;
 			}
 			
+			if (delay > 0) {
+				delay -= delta;
+				if (delay <= 0) {
+					if (effects.size == 0) {
+						addEffect(5, -45);
+						addEffect(width/2/2, -45);
+						addEffect(width/4*3, -45);
+						//addEffect(width/2, -15);
+						addEffect(width-30, -45);
+						//for (int i = 0; i < 8; i++)
+							//addEffect(width/8*i, -15);
+					}
+					if (effects.size > 4)  {
+						for (int i = 0; i < 4; i++)
+							effects.removeIndex(i);
+					}
+					delay = 5;
+				}
+			}
+			
 			planet.setColor(red, green, blue, 1.f);
+			for (ParticleEffect effect:effects)
+			effect.getEmitters().first().getTint().setColors(new float[] {red, green, blue});
 			currentButton.setAlpha(alpha);
 			btn_next.setAlpha(alpha);
 			btn_back.setAlpha(alpha);
