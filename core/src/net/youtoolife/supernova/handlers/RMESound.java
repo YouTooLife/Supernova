@@ -38,7 +38,7 @@ public class RMESound {
 		streams = new Array<HSTREAM>();
 		playList = new Array<String>();
 		
-		getSubDir(Gdx.files.local(dir));
+		getSubDir(Gdx.files.external(dir));
 	}
 	
 	public static void play() {
@@ -91,6 +91,7 @@ public class RMESound {
 	private static void getSubDir(FileHandle s) {
 		FileHandle dir = s;
 		FileHandle[] files = dir.list();
+		System.out.println("__MUS__"+s);
 		for (FileHandle file: files) {	
 			if(file.isDirectory())
 				getSubDir(file);
@@ -101,8 +102,8 @@ public class RMESound {
 					||file.name().contains(".mod")
 					||file.name().contains(".caf")) {
 				
-				musics.add(loadMusic(s+"/"+file.name()));
-				streams.add(loadStream(s+"/"+file.name()));
+				musics.add(loadMusic(Gdx.files.getExternalStoragePath()+"/"+s+"/"+s+file.name()));
+				streams.add(loadStream(Gdx.files.getExternalStoragePath()+"/"+s+"/"+file.name()));
 				playList.add(s+"/"+file.nameWithoutExtension());
 				
 				System.out.println(s+"/"+file.name());

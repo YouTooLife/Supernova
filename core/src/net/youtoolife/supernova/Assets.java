@@ -15,15 +15,16 @@ public class Assets {
 	
 	public static Texture field;
 	
-	public static String dir = System.getProperty("user.home")+"/YouTooLife/Supernova/";
+	public static String dir = "/YouTooLife/Supernova/";
 	
 	//public static String login = System.getProperty("user.name"), passWord = "toor";
 	
 	public static void load () {
+		System.out.println("__LOAD"+Gdx.files.getLocalStoragePath()+" "+Gdx.files.getExternalStoragePath());
 		if (Supernova.bassMode)
-		RMESound.loadFiles("SFX/");
+		RMESound.loadFiles(dir+"SFX/");
 		loadIntTextures("textures/");
-		loadTextures("textures/");
+		loadTextures(dir+"textures/");
 	}
 	
 	private static void loadIntTextures(String dir) {
@@ -34,15 +35,15 @@ public class Assets {
 		
 		textures = new Array<Texture>();
 		textureNames = new Array<String>();
-		getSubDir(Gdx.files.local(dir));
+		getSubDir(Gdx.files.external(dir));
 	}
 	
 	public static Texture getTexture(String name) {
 		Texture texture = null;
 		try{
-		texture = textures.get(textureNames.indexOf("textures/"+name, false));
-		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println(name);
+		texture = textures.get(textureNames.indexOf(dir+"textures/"+name, false));
+		}catch(Exception e){
+			System.out.println("___Error!:"+name+"\n "+e.getMessage());
 		}
 		return texture;
 	}
@@ -63,6 +64,7 @@ public class Assets {
 		FileHandle dir = s;
 		FileHandle[] files = dir.list();
 		for (FileHandle file: files) {	
+			//System.out.println("__{"+file.path()+"\n ___"+s);
 			if(file.isDirectory())
 				getSubDir(file);
 			if (file.name().contains(".png")

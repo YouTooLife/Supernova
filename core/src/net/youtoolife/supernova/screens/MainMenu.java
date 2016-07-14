@@ -44,7 +44,6 @@ import net.youtoolife.supernova.models.Opponent;
 import net.youtoolife.supernova.models.Player;
 import net.youtoolife.supernova.models.SurfaceX;
 import net.youtoolife.supernova.models.Wall;
-
 import static net.youtoolife.supernova.Assets.dir;
 
 public class MainMenu extends ScreenAdapter {
@@ -83,14 +82,16 @@ public static float width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHe
 	public MainMenu (Supernova game) {
 		this.game = game;
 		
-		
 		guiCam.position.set(width / 2, height / 2, 0);
 		
 		Json json = new Json();
 		
-		FileHandle filehandle = Gdx.files.local("objects/MainMenu.jGUI");
-		//RMECrypt crypt = new RMECrypt();
-		String s = filehandle.readString();// crypt.decrypt(filehandle.readBytes(), "YouTooLife1911");
+		FileHandle filehandle = Gdx.files.external(dir+"objects/MainMenu.jXGUI");
+		RMECrypt crypt = new RMECrypt();
+		String s = 
+				//filehandle.readString();// 
+		crypt.decrypt(filehandle.readBytes(), "YouTooLife1911");
+		//System.out.println(s);
 		gui = json.fromJson(RMEGUI.class, s);
 
 		//gui = json.fromJson(RMEGUI.class, new FileHandle("objects/MainMenu.jGUI"));
@@ -116,7 +117,7 @@ public static float width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHe
 	
 	public void addEffect(float x, float y) {
 		ParticleEffect effect = new ParticleEffect();
-		effect.load(Gdx.files.local("particle_menu2.rmp"),Gdx.files.local(""));
+		effect.load(Gdx.files.external(dir+"particle_menu2.rmp"),Gdx.files.external(dir));
 		effect.setPosition(x, y);
 		//effect.getEmitters().first().setPosition(10, height/2);
 		effect.start();
