@@ -68,9 +68,9 @@ public static float width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHe
 		guiCam.position.set(width / 2, height / 2, 0);
 		Json json = new Json();
 		
-		FileHandle filehandle = Gdx.files.local("Maps/"+level+".level");
-		RMECrypt crypt = new RMECrypt();
-		String s = crypt.decrypt(filehandle.readBytes(), "YouTooLife1911");
+		FileHandle filehandle = Gdx.files.local("Maps/"+level+".jMap");
+		//RMECrypt crypt = new RMECrypt();
+		String s = filehandle.readString();//crypt.decrypt(filehandle.readBytes(), "YouTooLife1911");
 		pack = json.fromJson(RMEPack.class, s);
 	
 		

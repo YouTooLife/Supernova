@@ -15,6 +15,8 @@ public class Assets {
 	
 	public static Texture field;
 	
+	public static String dir = System.getProperty("user.home")+"/YouTooLife/Supernova/";
+	
 	//public static String login = System.getProperty("user.name"), passWord = "toor";
 	
 	public static void load () {

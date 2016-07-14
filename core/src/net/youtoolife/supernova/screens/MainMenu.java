@@ -45,6 +45,8 @@ import net.youtoolife.supernova.models.Player;
 import net.youtoolife.supernova.models.SurfaceX;
 import net.youtoolife.supernova.models.Wall;
 
+import static net.youtoolife.supernova.Assets.dir;
+
 public class MainMenu extends ScreenAdapter {
 	
 public static float width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHeight();
@@ -86,9 +88,9 @@ public static float width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHe
 		
 		Json json = new Json();
 		
-		FileHandle filehandle = Gdx.files.local("objects/MainMenu.jXGUI");
-		RMECrypt crypt = new RMECrypt();
-		String s = crypt.decrypt(filehandle.readBytes(), "YouTooLife1911");
+		FileHandle filehandle = Gdx.files.local("objects/MainMenu.jGUI");
+		//RMECrypt crypt = new RMECrypt();
+		String s = filehandle.readString();// crypt.decrypt(filehandle.readBytes(), "YouTooLife1911");
 		gui = json.fromJson(RMEGUI.class, s);
 
 		//gui = json.fromJson(RMEGUI.class, new FileHandle("objects/MainMenu.jGUI"));
